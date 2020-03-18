@@ -1,0 +1,25 @@
+#!/bin/sh
+
+if [ -n "$VIRTUAL_ENV" ]; then
+    has_old_env=true
+else
+    has_old_env=false
+fi
+
+if $has_old_env ; then
+    old_env_path=${VIRTUAL_ENV}
+    deactivate
+fi
+
+if [ -n "$PROJ_ARGS" ]; then
+    argv=(`echo $PROJ_ARGS`)
+    . ${argv[1]}/bin/activate   # index starts from 1 in zsh, fix it in bash, starts from 0
+else
+    . venv/bin/activate
+fi
+
+if $has_old_env ; then
+    echo "pyenv virtual environment resetted"
+    echo "  from: ${old_env_path}"
+    echo "  to: ${VIRTUAL_ENV}"
+fi
